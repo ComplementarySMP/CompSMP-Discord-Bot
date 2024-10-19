@@ -1,0 +1,38 @@
+{
+	"schemaVersion": 1,
+	"id": "compsmp-discord-bot",
+	"version": "${version}",
+	"name": "CompSMP Discord Bot",
+	"description": "This is an example description! Tell everyone what your mod is about!",
+	"authors": [
+		"ArkoSammy12"
+	],
+	"contact": {
+		"homepage": "https://github.com/ArkoSammy12",
+		"sources": "https://github.com/ArkoSammy12/CompSMP-Discord-Bot"
+	},
+	"license": "MIT",
+	"icon": "assets/compsmp-discord-bot/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			{
+				"value": "xd.arkosammy.compsmpdiscordbot.CompSMPDiscordBot",
+				"adapter": "kotlin"
+			}
+		]
+	},
+	"mixins": [
+		"compsmp-discord-bot.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.16.7",
+		"minecraft": "~1.21.1",
+		"java": ">=21",
+		"fabric-api": "*",
+		"fabric-language-kotlin": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
