@@ -3,7 +3,7 @@
 	"id": "compsmp-discord-bot",
 	"version": "${version}",
 	"name": "CompSMP Discord Bot",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "Discord bot for extra features for the ComplementarySMP community.",
 	"authors": [
 		"ArkoSammy12"
 	],
@@ -17,7 +17,7 @@
 	"entrypoints": {
 		"main": [
 			{
-				"value": "xd.arkosammy.compsmpdiscordbot.CompSMPDiscordBot",
+				"value": "io.github.arkosammy12.compsmpdiscordbot.CompSMPDiscordBot",
 				"adapter": "kotlin"
 			}
 		]
@@ -27,12 +27,9 @@
 	],
 	"depends": {
 		"fabricloader": ">=0.16.7",
-		"minecraft": "~1.21.1",
+		"minecraft": ">=1.21.5",
 		"java": ">=21",
 		"fabric-api": "*",
 		"fabric-language-kotlin": "*"
-	},
-	"suggests": {
-		"another-mod": "*"
 	}
 }

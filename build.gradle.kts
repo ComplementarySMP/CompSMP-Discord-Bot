@@ -3,10 +3,10 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	id("fabric-loom") version "1.8-SNAPSHOT"
+	id("fabric-loom") version "1.10-SNAPSHOT"
 	id("maven-publish")
-	id("org.jetbrains.kotlin.jvm") version "2.0.21"
-	id("dev.kordex.gradle.kordex") version "1.4.2"
+	id("org.jetbrains.kotlin.jvm") version "2.1.21"
+	id("dev.kordex.gradle.kordex") version "1.6.1"
 }
 
 version = property("mod_version").toString()
@@ -47,16 +47,15 @@ dependencies {
 	modImplementation("net.fabricmc.fabric-api:fabric-api:${property("fabric_version")}")
 	modImplementation("net.fabricmc:fabric-language-kotlin:${property("fabric_kotlin_version")}")
 
-	modImplementation("xd.arkosammy:monkeyconfig:${property("monkey_config_version")}")
-
+	// Monkey Config
+	include(implementation("io.github.arkosammy12:monkey-config:${property("monkey_config_version")}")!!)
 }
 
 kordEx {
 	jvmTarget = 21
     bot {
         dataCollection(DataCollection.Standard)
-
-        mainClass = "xd.arkosammy.compsmpdiscordbot.CompSMPDiscordBot"
+        mainClass = "io.github.arkosammy12.compsmpdiscordbot.CompSMPDiscordBot"
     }
 }
 

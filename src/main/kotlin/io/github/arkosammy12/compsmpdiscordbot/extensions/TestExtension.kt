@@ -1,4 +1,4 @@
-package xd.arkosammy.compsmpdiscordbot.extensions
+package io.github.arkosammy12.compsmpdiscordbot.extensions
 
 import dev.kord.common.entity.Snowflake
 import dev.kordex.core.commands.Arguments
@@ -11,15 +11,14 @@ import dev.kordex.core.extensions.Extension
 import dev.kordex.core.extensions.chatCommand
 import dev.kordex.core.extensions.publicSlashCommand
 import dev.kordex.core.utils.respond
-import xd.arkosammy.compsmpdiscordbot.CompSMPDiscordBot
-import xd.arkosammy.compsmpdiscordbot.config.ConfigSettings
-import xd.arkosammy.monkeyconfig.managers.getSettingValue
-import xd.arkosammy.monkeyconfig.settings.NumberSetting
 
 class TestExtension : Extension() {
 	override val name = "test"
+	override suspend fun setup() {
+		TODO("Not yet implemented")
+	}
 
-
+	/*
 	override suspend fun setup() {
 		chatCommand(::SlapArgs) {
 			name = "slap"
@@ -135,4 +134,6 @@ class TestExtension : Extension() {
 			description = "What you want to slap with"
 		}
 	}
+
+	 */
 }

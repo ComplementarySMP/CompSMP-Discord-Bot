@@ -1,9 +1,9 @@
-package xd.arkosammy.compsmpdiscordbot.config
+package io.github.arkosammy12.compsmpdiscordbot.config
 
-import xd.arkosammy.monkeyconfig.settings.ConfigSetting
-import xd.arkosammy.monkeyconfig.settings.NumberSetting
-import xd.arkosammy.monkeyconfig.settings.StringSetting
-import xd.arkosammy.monkeyconfig.util.SettingLocation
+class Reference {
+
+    /*
+
 
 enum class ConfigSettings(private val builder: ConfigSetting.Builder<*, *, *>) {
     BOT_TOKEN(StringSetting.Builder(SettingLocation(SettingGroups.BOT_SETTINGS.groupName, "token"), defaultValue = "")),
@@ -22,5 +22,25 @@ enum class ConfigSettings(private val builder: ConfigSetting.Builder<*, *, *>) {
             get() = entries.map { e -> e.builder }.toList()
 
     }
+
+}
+
+    enum class SettingGroups(private val settingGroup: MutableSettingGroup) {
+    BOT_SETTINGS(DefaultMutableSettingGroup("bot_settings", registerSettingsAsCommands = false)),
+    AUTO_APPROVAL_SETTINGS(DefaultMutableSettingGroup("auto_approval_settings", registerSettingsAsCommands = false));
+
+    val groupName: String
+        get() = this.settingGroup.name
+
+    companion object {
+
+        val settingGroups: List<MutableSettingGroup>
+            get() = entries.map { e -> e.settingGroup }.toList()
+
+    }
+
+}
+
+     */
 
 }
