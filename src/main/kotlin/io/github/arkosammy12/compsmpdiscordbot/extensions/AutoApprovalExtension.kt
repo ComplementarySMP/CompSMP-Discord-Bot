@@ -34,7 +34,7 @@ import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import java.util.UUID
 
-class ApprovalExtension() : Extension() {
+class AutoApprovalExtension() : Extension() {
 
     override val name = NAME
 
@@ -154,7 +154,7 @@ class ApprovalExtension() : Extension() {
     }
 
     companion object {
-        const val NAME = "approval_extension"
+        const val NAME = "auto_approval_extension"
     }
 
 }

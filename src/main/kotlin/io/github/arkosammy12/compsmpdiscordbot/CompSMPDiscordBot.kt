@@ -5,8 +5,8 @@ import dev.kord.gateway.Intent
 import dev.kord.gateway.PrivilegedIntent
 import dev.kordex.core.ExtensibleBot
 import io.github.arkosammy12.compsmpdiscordbot.config.ConfigUtils
-import io.github.arkosammy12.compsmpdiscordbot.extensions.ApprovalExtension
-import io.github.arkosammy12.compsmpdiscordbot.extensions.ConfigurableChatCommandsExtension
+import io.github.arkosammy12.compsmpdiscordbot.extensions.AutoApprovalExtension
+import io.github.arkosammy12.compsmpdiscordbot.extensions.ReloadableChatCommandsExtension
 import io.github.arkosammy12.monkeyconfig.base.ConfigManager
 import io.github.arkosammy12.monkeyconfig.builders.tomlConfigManager
 import io.github.arkosammy12.monkeyconfig.managers.getRawNumberSettingValue
@@ -61,8 +61,8 @@ object CompSMPDiscordBot : DedicatedServerModInitializer {
 			addDefaultEntry("ping" to "pong")
 			onUpdated = {
 				runBlocking {
-					bot.unloadExtension(ConfigurableChatCommandsExtension.NAME)
-					bot.loadExtension(ConfigurableChatCommandsExtension.NAME)
+					bot.unloadExtension(ReloadableChatCommandsExtension.NAME)
+					bot.loadExtension(ReloadableChatCommandsExtension.NAME)
 				}
 			}
 		}
@@ -99,8 +99,8 @@ object CompSMPDiscordBot : DedicatedServerModInitializer {
 					defaultPrefix = "!"
 				}
 				extensions {
-					add(::ApprovalExtension)
-					add(::ConfigurableChatCommandsExtension)
+					add(::AutoApprovalExtension)
+					add(::ReloadableChatCommandsExtension)
 				}
 				about {
 

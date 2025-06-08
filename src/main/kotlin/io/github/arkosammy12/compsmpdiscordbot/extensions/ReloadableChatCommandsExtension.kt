@@ -11,7 +11,7 @@ import io.github.arkosammy12.monkeyconfig.managers.getStringMapSection
 import io.github.arkosammy12.monkeyconfig.sections.maps.StringMapSection
 import java.util.stream.Collectors
 
-class ConfigurableChatCommandsExtension : Extension() {
+class ReloadableChatCommandsExtension : Extension() {
 
     override val name: String = NAME
 
@@ -35,7 +35,7 @@ class ConfigurableChatCommandsExtension : Extension() {
     }
 
     companion object {
-        const val NAME = "configurable_chat_commands_extension"
+        const val NAME = "reloadable_chat_commands_extension"
     }
 
 }
