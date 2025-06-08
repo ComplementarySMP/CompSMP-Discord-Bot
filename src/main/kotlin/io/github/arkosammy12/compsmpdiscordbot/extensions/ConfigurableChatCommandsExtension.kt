@@ -13,7 +13,7 @@ import java.util.stream.Collectors
 
 class ConfigurableChatCommandsExtension : Extension() {
 
-    override val name: String = "configurable_chat_commands_extension"
+    override val name: String = NAME
 
     val configurableCommands: () -> Map<String, String> = {
         val mapSection: StringMapSection = CompSMPDiscordBot.CONFIG_MANAGER.getStringMapSection(ConfigUtils.CHAT_COMMANDS)!!
@@ -32,6 +32,10 @@ class ConfigurableChatCommandsExtension : Extension() {
 
         }
 
+    }
+
+    companion object {
+        const val NAME = "configurable_chat_commands_extension"
     }
 
 }

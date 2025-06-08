@@ -36,7 +36,7 @@ import java.util.UUID
 
 class ApprovalExtension() : Extension() {
 
-    override val name = "approval_extension"
+    override val name = NAME
 
 
     val adminRoleId: () -> Long = { CompSMPDiscordBot.CONFIG_MANAGER.getRawNumberSettingValue(ConfigUtils.COMPSMP_ADMIN_ROLE_ID)!! }
@@ -151,6 +151,10 @@ class ApprovalExtension() : Extension() {
             name = Key("username")
             description = Key("The username of the person you wish to see the Minecraft game profile of.")
         }
+    }
+
+    companion object {
+        const val NAME = "approval_extension"
     }
 
 }

@@ -1,8 +1,12 @@
 package io.github.arkosammy12.compsmpdiscordbot
 
 import dev.kord.common.entity.Snowflake
+import dev.kord.gateway.Intent
+import dev.kord.gateway.PrivilegedIntent
 import dev.kordex.core.ExtensibleBot
 import io.github.arkosammy12.compsmpdiscordbot.config.ConfigUtils
+import io.github.arkosammy12.compsmpdiscordbot.extensions.ApprovalExtension
+import io.github.arkosammy12.compsmpdiscordbot.extensions.ConfigurableChatCommandsExtension
 import io.github.arkosammy12.monkeyconfig.base.ConfigManager
 import io.github.arkosammy12.monkeyconfig.builders.tomlConfigManager
 import io.github.arkosammy12.monkeyconfig.managers.getRawNumberSettingValue
@@ -55,6 +59,12 @@ object CompSMPDiscordBot : DedicatedServerModInitializer {
 		}
 		ConfigUtils.CHAT_COMMANDS = stringMapSection("chat_commands") {
 			addDefaultEntry("ping" to "pong")
+			onUpdated = {
+				runBlocking {
+					bot.unloadExtension(ConfigurableChatCommandsExtension.NAME)
+					bot.loadExtension(ConfigurableChatCommandsExtension.NAME)
+				}
+			}
 		}
 
 	}
@@ -66,7 +76,7 @@ object CompSMPDiscordBot : DedicatedServerModInitializer {
 		val guildId: Long = CONFIG_MANAGER.getRawNumberSettingValue(ConfigUtils.GUILD_ID)!!
 		guildSnowFlake = Snowflake(guildId)
 		val token: String = CONFIG_MANAGER.getRawStringSettingValue(ConfigUtils.BOT_TOKEN)!!
-		bot = Bot.createBot(token)
+		bot = createBot(token)
 	}
 
 	private fun onServerStarting(server: MinecraftServer) {
@@ -81,5 +91,33 @@ object CompSMPDiscordBot : DedicatedServerModInitializer {
 
 	}
 
+	fun createBot(token: String): ExtensibleBot {
+		return runBlocking {
+			ExtensibleBot(token) {
+				chatCommands {
+					enabled = true
+					defaultPrefix = "!"
+				}
+				extensions {
+					add(::ApprovalExtension)
+					add(::ConfigurableChatCommandsExtension)
+				}
+				about {
+
+				}
+				hooks {
+
+				}
+				@OptIn(PrivilegedIntent::class)
+				intents {
+					+Intent.GuildMembers
+					+Intent.GuildMessageReactions
+					+Intent.MessageContent
+				}
+				cache {
+				}
+			}
+		}
+	}
 
 }
