@@ -44,6 +44,9 @@ class ApprovalExtension() : Extension() {
     val approvalEmojiId: () -> Long = { CompSMPDiscordBot.CONFIG_MANAGER.getRawNumberSettingValue(ConfigUtils.APPROVAL_EMOJI_ID)!! }
     val approvalRoleId: () -> Long = { CompSMPDiscordBot.CONFIG_MANAGER.getRawNumberSettingValue(ConfigUtils.APPROVAL_ROLE_ID)!! }
     val approvalEmojiName: () -> String = { CompSMPDiscordBot.CONFIG_MANAGER.getRawStringSettingValue(ConfigUtils.APPROVAL_EMOJI_NAME)!! }
+    val httpClient: HttpClient by lazy {
+        HttpClient()
+    }
 
     override suspend fun setup() {
         this.event<ReactionAddEvent> {
@@ -87,8 +90,7 @@ class ApprovalExtension() : Extension() {
             action {
                 respond {
                     val username: String = arguments.username
-                    val client = HttpClient()
-                    val response: HttpResponse = client.get(URLBuilder("https://api.mojang.com/users/profiles/minecraft/${username}").build()) {
+                    val response: HttpResponse = httpClient.get(URLBuilder("https://api.mojang.com/users/profiles/minecraft/${username}").build()) {
                         method = HttpMethod.Get
                         timeout {
                             requestTimeoutMillis = 5_000
@@ -108,11 +110,14 @@ class ApprovalExtension() : Extension() {
                     } else {
                         content = "Error fetching game profile: ${response.status}"
                     }
-                    client.close()
                 }
             }
         }
 
+    }
+
+    override suspend fun unload() {
+        this.httpClient.close()
     }
 
     private suspend fun matchesApprovalContext(eventEmoji: ReactionEmoji, user: UserBehavior, message: MessageBehavior): Boolean {
