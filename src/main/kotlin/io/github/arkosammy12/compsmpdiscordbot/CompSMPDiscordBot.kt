@@ -9,6 +9,7 @@ import io.github.arkosammy12.monkeyconfig.managers.getRawNumberSettingValue
 import io.github.arkosammy12.monkeyconfig.managers.getRawStringSettingValue
 import io.github.arkosammy12.monkeyutils.registrars.DefaultConfigRegistrar
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.runBlocking
 import net.fabricmc.api.DedicatedServerModInitializer
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents
@@ -75,6 +76,7 @@ object CompSMPDiscordBot : DedicatedServerModInitializer {
 	private fun onServerStopping(server: MinecraftServer) {
 		runBlocking {
 			bot.close()
+			botJob.cancelAndJoin()
 		}
 
 	}
