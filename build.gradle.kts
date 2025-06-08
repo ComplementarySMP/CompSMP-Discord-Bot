@@ -26,6 +26,7 @@ repositories {
 	maven("https://oss.sonatype.org/content/repositories/snapshots")
 	maven("https://maven.enjarai.dev/releases")
 	maven("https://maven.nucleoid.xyz")
+	maven("https://api.modrinth.com/maven")
 }
 
 loom {
@@ -49,6 +50,12 @@ dependencies {
 
 	// Monkey Config
 	include(implementation("io.github.arkosammy12:monkey-config:${property("monkey_config_version")}")!!)
+
+	// Monkey Utils
+	modImplementation("maven.modrinth:uApL7Qhc:${property("monkey_utils_version")}")
+
+
+	include(modImplementation("me.lucko:fabric-permissions-api:0.3.1")!!)
 }
 
 kordEx {

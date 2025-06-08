@@ -13,9 +13,9 @@
 	},
 	"license": "MIT",
 	"icon": "assets/compsmp-discord-bot/icon.png",
-	"environment": "*",
+	"environment": "server",
 	"entrypoints": {
-		"main": [
+		"server": [
 			{
 				"value": "io.github.arkosammy12.compsmpdiscordbot.CompSMPDiscordBot",
 				"adapter": "kotlin"
