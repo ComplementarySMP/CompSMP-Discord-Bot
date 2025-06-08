@@ -4,6 +4,7 @@ import dev.kord.gateway.Intent
 import dev.kord.gateway.PrivilegedIntent
 import dev.kordex.core.ExtensibleBot
 import io.github.arkosammy12.compsmpdiscordbot.extensions.ApprovalExtension
+import io.github.arkosammy12.compsmpdiscordbot.extensions.ConfigurableChatCommandsExtension
 import kotlinx.coroutines.runBlocking
 
 object Bot {
@@ -12,10 +13,12 @@ object Bot {
         return runBlocking {
             ExtensibleBot(token) {
                 chatCommands {
-
+                    enabled = true
+                    defaultPrefix = "!"
                 }
                 extensions {
-                    add { ApprovalExtension("approval_extension") }
+                    add(::ApprovalExtension)
+                    add(::ConfigurableChatCommandsExtension)
                 }
                 about {
 

@@ -11,4 +11,6 @@ object ConfigUtils {
     lateinit var APPROVAL_ROLE_ID: ElementPath
     lateinit var APPROVAL_EMOJI_ID: ElementPath
     lateinit var APPROVAL_EMOJI_NAME: ElementPath
+
+    lateinit var CHAT_COMMANDS: ElementPath
 }

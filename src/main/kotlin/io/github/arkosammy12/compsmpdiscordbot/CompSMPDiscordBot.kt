@@ -52,6 +52,9 @@ object CompSMPDiscordBot : DedicatedServerModInitializer {
 			}
 
 		}
+		ConfigUtils.CHAT_COMMANDS = stringMapSection("chat_commands") {
+			addDefaultEntry("ping" to "pong")
+		}
 
 	}
 

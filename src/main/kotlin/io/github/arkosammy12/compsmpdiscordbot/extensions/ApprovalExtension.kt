@@ -34,13 +34,16 @@ import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import java.util.UUID
 
-class ApprovalExtension(override val name: String) : Extension() {
+class ApprovalExtension() : Extension() {
 
-    val adminRoleId: Long = CompSMPDiscordBot.CONFIG_MANAGER.getRawNumberSettingValue(ConfigUtils.COMPSMP_ADMIN_ROLE_ID)!!
-    val applicationChannelId: Long = CompSMPDiscordBot.CONFIG_MANAGER.getRawNumberSettingValue(ConfigUtils.APPLICATION_CHANNEL_ID)!!
-    val approvalEmojiId: Long = CompSMPDiscordBot.CONFIG_MANAGER.getRawNumberSettingValue(ConfigUtils.APPROVAL_EMOJI_ID)!!
-    val approvalRoleId: Long = CompSMPDiscordBot.CONFIG_MANAGER.getRawNumberSettingValue(ConfigUtils.APPROVAL_ROLE_ID)!!
-    val approvalEmojiName: String = CompSMPDiscordBot.CONFIG_MANAGER.getRawStringSettingValue(ConfigUtils.APPROVAL_EMOJI_NAME)!!
+    override val name = "approval_extension"
+
+
+    val adminRoleId: () -> Long = { CompSMPDiscordBot.CONFIG_MANAGER.getRawNumberSettingValue(ConfigUtils.COMPSMP_ADMIN_ROLE_ID)!! }
+    val applicationChannelId: () -> Long = { CompSMPDiscordBot.CONFIG_MANAGER.getRawNumberSettingValue(ConfigUtils.APPLICATION_CHANNEL_ID)!! }
+    val approvalEmojiId: () -> Long = { CompSMPDiscordBot.CONFIG_MANAGER.getRawNumberSettingValue(ConfigUtils.APPROVAL_EMOJI_ID)!! }
+    val approvalRoleId: () -> Long = { CompSMPDiscordBot.CONFIG_MANAGER.getRawNumberSettingValue(ConfigUtils.APPROVAL_ROLE_ID)!! }
+    val approvalEmojiName: () -> String = { CompSMPDiscordBot.CONFIG_MANAGER.getRawStringSettingValue(ConfigUtils.APPROVAL_EMOJI_NAME)!! }
 
     override suspend fun setup() {
         this.event<ReactionAddEvent> {
@@ -49,7 +52,7 @@ class ApprovalExtension(override val name: String) : Extension() {
                     return@action
                 }
                 val applicant: Member = event.messageAuthor?.asMember(CompSMPDiscordBot.guildSnowFlake) ?: return@action
-                applicant.addRole(Snowflake(approvalRoleId))
+                applicant.addRole(Snowflake(approvalRoleId()))
             }
 
         }
@@ -60,21 +63,20 @@ class ApprovalExtension(override val name: String) : Extension() {
                 }
                 val applicant: Member = event.message.asMessage().author?.asMember(CompSMPDiscordBot.guildSnowFlake) ?: return@action
                 val applicantRoles: Set<Snowflake> = applicant.roleIds
-                if (!applicantRoles.any { roleId -> roleId.value.toLong() == approvalRoleId }) {
+                if (!applicantRoles.any { roleId -> roleId.value.toLong() == approvalRoleId() }) {
                     return@action
                 }
-                val reactionEmoji: ReactionEmoji = ReactionEmoji.Custom(Snowflake(approvalEmojiId), approvalEmojiName, false)
+                val reactionEmoji: ReactionEmoji = ReactionEmoji.Custom(Snowflake(approvalEmojiId()), approvalEmojiName(), false)
                 var hasApprovedRoleByOtherAdmin = false
-                event.message.getReactors(reactionEmoji)
                 event.message.getReactors(reactionEmoji).filter { user -> user.id != event.user }.collect { user ->
                     val member: Member = user.asMember(CompSMPDiscordBot.guildSnowFlake)
-                    if (member.roleIds.any {roleId -> roleId.value.toLong() == adminRoleId}) {
+                    if (member.roleIds.any {roleId -> roleId.value.toLong() == adminRoleId() }) {
                         hasApprovedRoleByOtherAdmin = true
                         return@collect
                     }
                 }
                 if (!hasApprovedRoleByOtherAdmin) {
-                    applicant.removeRole(Snowflake(approvalRoleId))
+                    applicant.removeRole(Snowflake(approvalRoleId()))
                 }
             }
         }
@@ -118,13 +120,13 @@ class ApprovalExtension(override val name: String) : Extension() {
             return false
         }
         val reactor: Member = user.asMember(CompSMPDiscordBot.guildSnowFlake)
-        if (!reactor.roleIds.any { roleId -> roleId.value.toLong() == adminRoleId }) {
+        if (!reactor.roleIds.any { roleId -> roleId.value.toLong() == adminRoleId() }) {
             return false
         }
-        if (message.channelId.value.toLong() != applicationChannelId) {
+        if (message.channelId.value.toLong() != applicationChannelId()) {
             return false
         }
-        if (eventEmoji.id.value.toLong() != approvalEmojiId) {
+        if (eventEmoji.id.value.toLong() != approvalEmojiId()) {
             return false
         }
         return true
