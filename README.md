@@ -1,1 +1,3 @@
-# CompSMP-Discord-Bot
+# CompSMP Discord Bot
+
+Work in progress
