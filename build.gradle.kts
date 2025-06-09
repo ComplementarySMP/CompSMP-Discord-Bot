@@ -1,4 +1,3 @@
-import dev.kordex.gradle.plugins.kordex.DataCollection
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
@@ -6,7 +5,7 @@ plugins {
 	id("fabric-loom") version "1.10-SNAPSHOT"
 	id("maven-publish")
 	id("org.jetbrains.kotlin.jvm") version "2.1.21"
-	id("dev.kordex.gradle.kordex") version "1.6.1"
+	id("com.gradleup.shadow") version "9.0.0-beta15"
 }
 
 version = property("mod_version").toString()
@@ -27,6 +26,20 @@ repositories {
 	maven("https://maven.enjarai.dev/releases")
 	maven("https://maven.nucleoid.xyz")
 	maven("https://api.modrinth.com/maven")
+	maven {
+		name = "KordEx (Releases)"
+		url = uri("https://repo.kordex.dev/releases")
+	}
+
+	maven {
+		name = "KordEx (Snapshots)"
+		url = uri("https://repo.kordex.dev/snapshots")
+	}
+
+	maven {
+		name = "Kord (Snapshots)"
+		url = uri("https://repo.kord.dev/snapshots/")
+	}
 }
 
 loom {
@@ -40,8 +53,10 @@ loom {
 
 }
 
+val kordexVersion: String = property("kordex_version") as String
+
 dependencies {
-	minecraft("com.mojang:minecraft:${property("minecraft_version")}")
+	minecraft("com.mojang:minecraft:${property("minecraft_version")}") {}
 	mappings("net.fabricmc:yarn:${property("yarn_mappings")}:v2")
 	modImplementation("net.fabricmc:fabric-loader:${property("loader_version")}")
 
@@ -54,16 +69,11 @@ dependencies {
 	// Monkey Utils
 	modImplementation("maven.modrinth:uApL7Qhc:${property("monkey_utils_version")}")
 
-
+	// Fabric Permissions API
 	include(modImplementation("me.lucko:fabric-permissions-api:0.3.1")!!)
-}
 
-kordEx {
-	jvmTarget = 21
-    bot {
-        dataCollection(DataCollection.Standard)
-        mainClass = "io.github.arkosammy12.compsmpdiscordbot.CompSMPDiscordBot"
-    }
+	// Kordex
+	include(implementation("dev.kordex:kord-extensions:${kordexVersion}")!!)
 }
 
 tasks.processResources {
@@ -82,6 +92,12 @@ tasks.withType<KotlinCompile>().configureEach {
 	compilerOptions {
 		jvmTarget = JvmTarget.JVM_21
 	}
+}
+
+tasks.shadowJar {
+	isZip64 = true
+	exclude("net/fabricmc/language/kotlin/**")
+	exclude("fabric-language-kotlin-*.jar")
 }
 
 java {
